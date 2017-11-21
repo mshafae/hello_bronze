@@ -38,26 +38,25 @@ uniform vec4 light0_color;
 uniform vec4 light1_position;
 uniform vec4 light1_color;
 
-vec4 ComputeLight (const in vec3 direction, const in vec4 lightcolor, const in vec3 normal, const in vec3 halfvec, const in vec4 mydiffuse, const in vec4 myspecular, const in float myshininess){
+vec4 ComputeLight (const in vec3 direction, const in vec3 normal, const in vec3 halfvec){
 
   vec3 W = vec3(1, 1, 1);
   vec3 P = vec3(1, 2, 20);
+
   //float nDotL = dot(normal, direction);
 
   float nDotH = dot(normal, halfvec);
 
 
   float x = (nDotH + 1) / 2.0;
-  vec4 retval = vec4(pow(x, P.x), pow(x, P.y), pow(x, P.z), 1.0);
+  vec3 X = vec3(x);
+  vec3 color = pow(X, P);
+  vec4 retval = vec4(color, 1.0);
+  //vec4 retval = vec4(pow(x, P.x), pow(x, P.y), pow(x, P.z), 1.0);
   return retval;
 }       
 
 void main (void){
-  vec4 ambient = vec4(0.2, 0.2, 0.2, 1.0);
-  vec4 diffuse = vec4(0.5, 0.5, 0.5, 1.0);
-  vec4 specular = vec4(1.0, 1.0, 1.0, 1.0);
-  float shininess = 100;
-  
   // They eye is always at (0,0,0) looking down -z axis 
   // Also compute current fragment position and direction to eye 
 
@@ -74,13 +73,13 @@ void main (void){
   vec3 position0 = light0_position.xyz / light0_position.w;
   vec3 direction0 = normalize (position0 - mypos);
   vec3 half0 = normalize(direction0 + eyedirn); 
-  vec4 color0 = ComputeLight(direction0, light0_color, normal, half0, diffuse, specular, shininess) ;
+  vec4 color0 = ComputeLight(direction0, normal, half0) ;
 
   // Light 1, point 
   vec3 position1 = light1_position.xyz / light1_position.w;
   vec3 direction1 = normalize(position1 - mypos);
   vec3 half1 = normalize(direction1 + eyedirn); 
-  vec4 color1 = ComputeLight(direction1, light1_color, normal, half1, diffuse, specular, shininess) ;
+  vec4 color1 = ComputeLight(direction1, normal, half1) ;
     
-  gl_FragColor = ambient + color0 + color1;
+  gl_FragColor = color0 + color1;
 }

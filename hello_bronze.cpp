@@ -163,9 +163,11 @@ public:
   }
    
   void initLights( ){
-    glm::vec3 color0(1.0, 0.0, 0.0);
+    //glm::vec3 color0(1.0, 0.0, 0.0);
+    glm::vec3 color0(1.0, 1.0, 1.0);
     glm::vec3 position0(0.0, 5.0, 10.0);
-    glm::vec3 color1(0.0, 0.0, 1.0);
+    //glm::vec3 color1(0.0, 0.0, 1.0);
+    glm::vec3 color1(1.0, 1.0, 1.0);
     glm::vec3 position1(0.0, 5.0, -10.0);
     light0 = SpinningLight(color0, position0, centerPosition);
     light1 = SpinningLight(color1, position1, centerPosition);
